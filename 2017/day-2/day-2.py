@@ -8,5 +8,4 @@ checksum = 0
 for x in data:
     checksum = checksum + (max(x) - min(x))
 
-
-print checksum
+print(checksum)
