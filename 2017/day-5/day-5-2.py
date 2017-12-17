@@ -1,5 +1,5 @@
 # --- Day 5: A Maze of Twisty Trampolines, All Alike ---
-# part 2 -
+# part 2 - ok
 
 with open('input.txt', 'r') as fp:
     moves = [int(x) for x in fp.read().split('\n')[:-1]]
@@ -26,5 +26,8 @@ while True:
         print(steps)
         exit(0)
 
-    moves[last_pos] = moves[last_pos] + 1
+    if moves[last_pos] >= 3:
+        moves[last_pos] = moves[last_pos] - 1
+    else:
+        moves[last_pos] = moves[last_pos] + 1
     last_pos = position
