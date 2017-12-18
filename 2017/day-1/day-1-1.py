@@ -4,11 +4,11 @@ with open('./input.txt', 'r') as fp:
     data = map(int, fp.read().rstrip())
 
 
-# Rotating so that we can igore the circular aspect of the problem.
-# This will not work if the data consists on only one or thow types of numbers
+# Rotating so that we can ignore the circular aspect of the problem.
+# This will not work if the data consists on only one or two types of numbers
 # 1111111, 122222 ect
 while True:
-    print data
+    print(data)
     if data[-1] == data[0]:
         tmp = data[1:] + data[:1]
         data = tmp
@@ -28,15 +28,12 @@ for i in data:
             nr = nr + 1
         else:
             if nr != 0:
-                # Saveing a sum
-                tmp = last * (nr)
+                # Saving a sum
+                tmp = last * nr
                 print("Found {0} {1}, sum = {2}".format(nr, last, tmp))
-                
                 s = s + tmp
-
                 # reset
                 nr = 0
-
     last = i
 
 if nr != 0:
