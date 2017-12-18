@@ -1,3 +1,5 @@
+# --- Day 8: I Heard You Like Registers ---
+# part 1 - ok
 
 register = {}
 
