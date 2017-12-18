@@ -15,5 +15,5 @@ for i, v in enumerate(data):
     if v == data[(i+skip) % l]:
         s = s + v
 
-print s
+print(s)
 
