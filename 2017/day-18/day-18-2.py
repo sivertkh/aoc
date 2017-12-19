@@ -16,6 +16,7 @@ class aocThread(threading.Thread):
     def run(self):
         runner(self.reg_init, self.inq, self.outq)
 
+
 def runner(register_init, inq, outq):
 
     position = 0

@@ -14,6 +14,7 @@ lengths = [3, 4, 1, 5]
 print(knot)
 for length in lengths:
 
+    print("cur_pos: {}".format(cur_pos))
     start = cur_pos
     end = cur_pos + length
 
@@ -30,11 +31,19 @@ for length in lengths:
 
         # Split it..
 
-        knot[start:length(knot)]
+        a = part[0:(end % len(knot))]
+#        knot[start:len(knot)] = a
 
-        print("-----")
-        print(part)
-        print("-----")
+        knot = knot[:start] + a
+
+        print("knot after a->{}<-".format(knot))
+
+        # part at the end
+        b = part[(end % len(knot)):]
+
+        knot = b + knot[(end % len(knot)):]
+#        knot[start:len(knot)] = b
+        print("knot after b->{}<-".format(knot))
 
     else:
         # No wrapping
@@ -44,5 +53,7 @@ for length in lengths:
 
     cur_pos = cur_pos + length + skip_size
     skip_size = skip_size + 1
+
+    cur_pos = (cur_pos % len(knot))
     print(knot)
 print(knot)

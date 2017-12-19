@@ -13,8 +13,7 @@ jumped = False
 while True:
 
     instruction = program[position]
-
-    type = instruction[0]
+    t = instruction[0]
 
     try:
         x = int(instruction[1])
@@ -29,28 +28,28 @@ while True:
 
     print(instruction)
 
-    if type == 'snd':
+    if t == 'snd':
         # snd X
         last_sound = x
-    elif type == 'set':
+    elif t == 'set':
         # set X Y
         register[instruction[1]] = y
-    elif type == 'add':
+    elif t == 'add':
         # add X Y
         register[instruction[1]] = x + y
-    elif type == 'mul':
+    elif t == 'mul':
         # mul X Y
         register[instruction[1]] = x * y
-    elif type == 'mod':
+    elif t == 'mod':
         # mod X Y
         register[instruction[1]] = x % y
-    elif type == 'rcv':
+    elif t == 'rcv':
         # rcv X
         if x != 0:
             print(last_sound)
             exit(0)
 
-    elif type == 'jgz':
+    elif t == 'jgz':
         # jgz X Y
 
         if x > 0:
