@@ -1,5 +1,5 @@
 # --- Day 19: A Series of Tubes ---
-# part 1 -
+# part 1 - ok
 
 
 def follow_path(pos_y, pos_x, direction, tubes):
