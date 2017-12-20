@@ -27,7 +27,6 @@ for i in range(1000):
         else:
             known_pos[pos] = [c]
 
-
     for c,particle in particles.items():
         # [p(x,y,z), v(x,y,z), a(x,y,z)]
         #    0,1,2     3,4,5     6,7,8
@@ -46,7 +45,7 @@ for i in range(1000):
 
     for k,v in known_pos.items():
         if len(v) > 1:
-            for k in v:
-                del particles[k]
+            for j in v:
+                del particles[j]
 
 print(len(particles))
