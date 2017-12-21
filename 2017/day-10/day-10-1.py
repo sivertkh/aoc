@@ -13,12 +13,18 @@ lengths = [3, 4, 1, 5]
 
 print(knot)
 for length in lengths:
-
+    print(knot)
     print("cur_pos: {}".format(cur_pos))
+    print("length: {}".format(length))
+    print("skip_size: {}".format(skip_size))
     start = cur_pos
     end = cur_pos + length
 
-    if end >= len(knot)-1:
+    if length == 1:
+        # Skipping when the length is 1
+        print("Skipping length 1")
+        pass
+    elif end >= len(knot)-1:
         # Wrapping around
 
         wrap_size = end - len(knot)-1
@@ -35,18 +41,22 @@ for length in lengths:
 #        knot[start:len(knot)] = a
 
         knot = knot[:start] + a
-
-        print("knot after a->{}<-".format(knot))
+        #print("a: {}".format(a))
+        #print("from {} to {}".format(0,(end % len(knot))))
+        #print("knot after a->{}<-".format(knot))
 
         # part at the end
         b = part[(end % len(knot)):]
 
         knot = b + knot[(end % len(knot)):]
 #        knot[start:len(knot)] = b
-        print("knot after b->{}<-".format(knot))
+        #print("b: {}".format(b))
+        #print("from {} to {}".format((end % len(knot)), len(knot)))
+        #print("knot after b->{}<-".format(knot))
 
     else:
         # No wrapping
+        print("No wrapping!")
         part = knot[start:end]
         part.reverse()
         knot[start:end] = part
@@ -56,4 +66,5 @@ for length in lengths:
 
     cur_pos = (cur_pos % len(knot))
     print(knot)
+    print("-----------------")
 print(knot)
