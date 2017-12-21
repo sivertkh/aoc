@@ -15,6 +15,7 @@ with open('input.txt', 'r') as fp:
 # Over time, the particle with the smallest combined acceleration will always be closest to 000
 pos = -1
 acc = 100000
+
 for c,v in particles.items():
     cacc = abs(v[6]) + abs(v[7]) + abs(v[8])
 
