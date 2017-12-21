@@ -9,7 +9,7 @@ buffer.append(0)
 cur_pos = 0
 step = 316
 
-for i in range(1,50000001):
+for i in range(1,10000):
     # step step nr of places
     # if it wrap -> move to
     new_pos = cur_pos
