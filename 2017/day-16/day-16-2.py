@@ -1,5 +1,5 @@
 # --- Day 16: Permutation Promenade ---
-# part 2 - OK
+# part 2
 
 
 with open('input.txt', 'r') as fp:
@@ -13,7 +13,7 @@ start = "".join(program)
 states = []
 print("start program: {}".format("".join(program)))
 
-nr = 1000000000
+nr = 10000
 
 # The list is circular and return to the original position after 30 iterations
 # We only need to run the dance nr % 30 times

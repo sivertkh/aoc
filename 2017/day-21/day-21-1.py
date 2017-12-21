@@ -13,10 +13,7 @@ with open('input-simple.txt', 'r') as fp:
         rules[k] = v
 
 # When searching for a rule to use, rotate and flip the pattern as necessary.
-
 pattern = np.array([['.', '#', '.'], ['.', '.', '#'], ['#', '#', '#']])
-#pattern = np.array([['1', '2', '3', '4'], ['5', '6', '7', '8'], ['9', '10', '11', '12'], ['13', '14', '15', '16']])
-
 
 for k in range(2):
 
@@ -31,19 +28,18 @@ for k in range(2):
         print("Error, something is wrong.. len(pattern) is not dividable with 2 or 3")
         exit(1)
 
-
     split = int(len(pattern) / split_size)
-
     # size of the new array is (split_size + 1) * split
     new_size = (split_size+1) * split
-    tmp = np.zeros((new_size, new_size))
+    new_array = np.empty((new_size, new_size), dtype=str)
 
     print("split_size: {}".format(split_size))
     print("split: {}".format(split))
     print("-*-*-*-")
+    i_offset = 0
     for i in range(split):
+        j_offset = 0
         for j in range(split):
-
             y = i * split
             x = j * split
             print("****")
@@ -51,23 +47,37 @@ for k in range(2):
             print("****")
             sub_array = pattern[y:y+split_size,x:x+split_size]
 
-            while True:
+            # Flatten
+            flatt = "".join(sub_array.flatten())
+            if flatt in rules:
+                print("In pattern!")
+                new = rules[flatt]
+                print(new)
+            else:
+
+                for a in range(1,4):
+                    rotate = "".join(np.rot90(sub_array,a).flatten())
+                    if rotate in rules:
+                        new = rules[rotate]
+                        break
+
+            new_array[i_offset:split_size+1,j_offset:split_size+1] = new
+
+            j_offset = j_offset + split_size + 1
+
+            print(new_array)
+            #while True:
                 # flatten and lookup
                 # if no hit, then try rotate and flip
 
-
-
-                pass
-
+    pattern = new_array
 
     print("-*-*-*-")
 
-
     # find match in rules
-
     # in no match try to rotate and flip
     # Only one operation or multiple?
-
     # combine into new array
 
-    print(i)
+
+print(pattern)
