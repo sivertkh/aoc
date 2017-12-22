@@ -83,9 +83,4 @@ for k in range(5):
 
     pattern = new_array
 
-    # find match in rules
-    # in no match try to rotate and flip
-    # Only one operation or multiple?
-    # combine into new array
-
 print(len([x for x in pattern.flatten() if x == '#']))
