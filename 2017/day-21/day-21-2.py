@@ -1,5 +1,5 @@
 # --- Day 21: Fractal Art ---
-# part 1 - ok
+# part 2 - ok
 
 import numpy as np
 
@@ -15,8 +15,9 @@ with open('input.txt', 'r') as fp:
 # When searching for a rule to use, rotate and flip the pattern as necessary.
 pattern = np.array([['.', '#', '.'], ['.', '.', '#'], ['#', '#', '#']])
 
-for k in range(5):
+for k in range(18):
 
+    print("At iteration {}".format(k))
     split_size = 0
     if len(pattern) % 2 == 0:
         # split into 2x2 blocs
