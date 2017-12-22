@@ -1,7 +1,8 @@
 # --- Day 17: Spinlock ---
-# part 1 - ok
+# part 1 -
 
 from collections import deque
+
 
 buffer = deque()
 buffer.append(0)
