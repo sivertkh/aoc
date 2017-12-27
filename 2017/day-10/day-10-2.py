@@ -34,8 +34,8 @@ def knot_hash(lengths, knot, pos, skip_size):
 
     return knot, cur_pos, skip_size
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
 
     knot = [x for x in range(256)]
     cur_pos = 0
