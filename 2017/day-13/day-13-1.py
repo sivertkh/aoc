@@ -5,7 +5,7 @@ with open('input.txt', 'r') as fp:
     tmp = [f.rstrip().split(': ') for f in fp]
     layers = {int(x[0]): int(x[1]) for x in tmp}
 
-size = int(tmp[-1][0])
+size = int(tmp[-1][0])+1
 pos = [(2*(layers[x] - 1)) if x in layers else -1 for x in range(
     size)]
 
