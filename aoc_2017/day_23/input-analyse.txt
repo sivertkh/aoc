@@ -1,0 +1,52 @@
+set b 65            # b = 65
+set c b             # c = b
+
+jnz a jmp1          # if a != 0 {
+jnz 1 jmp2          #
+label jmp1          #
+mul b 100           #   b = b * 100
+sub b -100000       #   b = b + 100000
+set c b             #   c = b
+sub c -17000        #   c = c + 17000
+                    # }
+
+label jmp2          # do {
+set f 1             #   f = 1
+set d 2             #   d = 2
+set e 2             #   e = 2
+label jmp5          #   do {
+label jmp4          #       do {
+set g d             #           g = d
+mul g e             #           g = g * e
+sub g b             #           g = g - b
+
+jnz g jmp3          #           if g != 0 {
+set f 0             #               f = 0
+label jmp3          #           }
+
+sub e -1            #           e = e - (-1)
+set g e             #           g = e
+sub g b             #           g = g - b
+jnz g jmp4          #       } while (g != 0)
+
+sub d -1            #       d = d - 1
+set g d             #       g = d
+sub g b             #       g = g - b
+jnz g jmp5          #   } while (g != 0)
+
+jnz f jmp6          #   if {f != 0) {
+sub h -1            #       h = h - 1
+label jmp6          #   }
+
+set g b             #   g = b
+sub g c             #   g = c
+
+
+jnz g jmp7          #   if g == 0 {
+jnz 1 jmp8          #       return
+                    #   }
+label jmp7          #
+sub b -17           #   b = b + 17
+jnz 1 jmp2          # } while g != 0
+
+label jmp 8         # return
