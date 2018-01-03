@@ -2,9 +2,7 @@
 # part 1 - ok
 
 with open('input.txt', 'r') as fp:
-
     pkgs = [x.rstrip().split("x") for x in fp]
-
 
 area = 0
 for pkg in pkgs:
