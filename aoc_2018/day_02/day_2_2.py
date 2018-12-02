@@ -1,7 +1,6 @@
 # --- Day 2: Inventory Management System ---
 # Part 2 -
 
-import sys
 
 with open('./input.txt') as fp:
     pkg_ids = [x for x in fp.read().split('\n') if x]
