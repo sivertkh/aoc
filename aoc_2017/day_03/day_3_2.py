@@ -1,35 +1,20 @@
 # --- Day 3: Spiral Memory ---
-# part 2 - OK
+# Part 2 - OK
+
 from math import sqrt, ceil
 
-# * Generate array
-# * Find path
-# * profit
+number = 325489
 
-
-number = 265149
-#number = 807
-
-# We need to create a array with space for the spiral.
-# Use the "simple" solution where we set the size as the square root of the
-# input. We round this number up.
-
-# We "cheat" by make it bigger then it needs to.. Finding the position then
-# becomes simple..
+# We "cheat" by make it bigger then it needs to
 size = int(ceil(sqrt(number))/2)
-
-# Initiate the array
 array = [[-1 for i in range(size)] for j in range(size)]
 
 # Find a center
 center = int(ceil(size/2))
-
 array[center][center] = 1
 
 cur_x = center
 cur_y = center
-
-
 value = 1
 while value <= number:
 
@@ -41,15 +26,13 @@ while value <= number:
     south_y = cur_y + 1
     south = array[south_y][south_x]
 
-    west_x = cur_x -1
+    west_x = cur_x - 1
     west_y = cur_y
     west = array[west_y][west_x]
 
     east_x = cur_x + 1
     east_y = cur_y
     east = array[east_y][east_x]
-
-    # if S is -1, North is -1, E is not -1
 
     if north is -1 and west is -1 and south is -1 and east is -1:
         # Move easte
@@ -79,8 +62,6 @@ while value <= number:
         print("No where to move!! ERROR!")
         exit(1)
 
-    # find the adjacent values
-
     # Recalculating after moving..
     north_x = cur_x
     north_y = cur_y - 1
@@ -90,7 +71,7 @@ while value <= number:
     south_y = cur_y + 1
     south = array[south_y][south_x]
 
-    west_x = cur_x -1
+    west_x = cur_x - 1
     west_y = cur_y
     west = array[west_y][west_x]
 

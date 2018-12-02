@@ -1,28 +1,16 @@
-
+# --- Day 3: Spiral Memory ---
+# Part 1 - ok
 from math import sqrt, ceil
 
-# * Generate array
-# * Find path
-# * profit
-
-
-number = 265149
+number = 325489
 #number = 25
 
-# We need to create a array with space for the spiral.
-# Use the "simple" solution where we set the size as the square root of the
-# input. We round this number up.
-
-# We cheat at make it bigger then it needs to.. Finding the position then
-# becomes simple..
+# We cheat by make it bigger then it needs to
 size = int(ceil(sqrt(number))*2)
-
-# Initiate the array
 array = [[-1 for i in range(size)] for j in range(size)]
 
 # Find a center
 center = int(ceil(size/2))
-
 array[center][center] = 1
 
 i = 2
@@ -38,16 +26,13 @@ while i <= number:
     south_y = cur_y + 1
     south = array[south_y][south_x]
 
-    west_x = cur_x -1
+    west_x = cur_x - 1
     west_y = cur_y
     west = array[west_y][west_x]
 
     east_x = cur_x + 1
     east_y = cur_y
     east = array[east_y][east_x]
-
-    # if S is -1, Norh is -1, E is not -1
-
 
     if north is -1 and west is -1 and south is -1 and east is -1:
         # Move easte
@@ -75,12 +60,9 @@ while i <= number:
         cur_y = north_y
 
     array[cur_y][cur_x] = i
-    i = i +1
+    i = i + 1
 
-# Center at [center][center]
-# current at [cur_y][cur_x]
 # find the diff between center and cur_y and center and cur_x
-
 y = abs(center-cur_y)
 x = abs(center-cur_x)
 
