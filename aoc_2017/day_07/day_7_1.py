@@ -1,9 +1,10 @@
+# --- Day 7: Recursive Circus ---
+# Part 1 -
 
 from collections import deque
 
 
 class Node:
-
     def __init__(self, name, weight, edges):
         self.name = name
         self.weight = weight
@@ -14,9 +15,7 @@ class Node:
 
 
 def create_tree():
-
     nodes = {}
-
     with open('input.txt', 'r') as fp:
         for line in fp:
             n = line.rstrip().split(" ")
@@ -28,22 +27,20 @@ def create_tree():
                 nodes[n[0]] = Node(n[0], n[1], None)
 
     # The root needs to have edges
-
-    ed = [v for k,v in nodes.items() if v.edges is not None]
+    ed = [v for k, v in nodes.items() if v.edges is not None]
 
     root = None
     edges = [x.edges for x in ed]
-    flatten = lambda l: [item for sublist in l for item in sublist]
+
+    def flatten(l): return [item for sublist in l for item in sublist]
 
     edges = flatten(edges)
 
     for n in ed:
         if n.name not in edges:
             root = n.name
-
-    print(root)
+    return root
 
 
 if __name__ == "__main__":
-
-    create_tree()
+    print(create_tree())
