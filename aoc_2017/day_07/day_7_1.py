@@ -1,8 +1,6 @@
 # --- Day 7: Recursive Circus ---
 # Part 1 -
 
-from collections import deque
-
 
 class Node:
     def __init__(self, name, weight, edges):
