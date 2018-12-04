@@ -80,6 +80,9 @@ for date, day in sleep.items():
                 asleep = True
                 updated[date][i] = '#'
 
+for date, day in updated.items():
+    print(''.join(day))
+
 asleep = {}
 for date, day in updated.items():
     asleep[date] = len([x for x in day if x == '#'])
@@ -130,4 +133,4 @@ for i in range(60):
 
 print(f'{mx_c} {mx_i}')
 
-print(max_sleep * mx_i)
+print(int(gid.lstrip('#')) * mx_i)
