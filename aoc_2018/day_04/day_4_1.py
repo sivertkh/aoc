@@ -1,5 +1,5 @@
 # --- Day 4: Repose Record ---
-# Part 1 -
+# Part 1 - ok
 
 with open('input.txt') as fp:
     data = [x for x in fp.read().split('\n') if x]
