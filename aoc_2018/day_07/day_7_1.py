@@ -25,9 +25,6 @@ while len(possible) > 0:
     path.append(comp)
     possible = possible[1:]
 
-    # Remove completed from requriments lists and
-    # recalculate
-
     new_req = {}
     for k, v in requirments.items():
         print(v)
