@@ -1,5 +1,5 @@
 # --- Day 13: Mine Cart Madness ---
-# Part 1 - ok
+# Part 2 - ok
 
 with open('input.txt') as fp:
     tracks = [list(x) for x in fp.read().split('\n') if x]
@@ -17,6 +17,7 @@ for y, track in enumerate(tracks):
                 'direction': pos,
                 'turn': 0,
                 'on_track': '-',
+                'crashed': False
             })
 
         elif pos == '^' or pos == 'v':
@@ -26,11 +27,22 @@ for y, track in enumerate(tracks):
                 'direction': pos,
                 'turn': 0,
                 'on_track': '|',
+                'crashed': False
             })
 
+
 while True:
+    carts_left = [x for x in carts if not x['crashed']]
+    if len(carts_left) == 1:
+        print('One cart left!')
+        print(f"{carts_left[0]['x']}, {carts_left[0]['y']}")
+        exit(0)
 
     for cart in sorted(carts, key=lambda k: [k['x'], k['y']]):
+
+        if cart['crashed']:
+            continue
+
         cur_x = cart['x']
         cur_y = cart['y']
         last_track = cart['on_track']
@@ -49,11 +61,15 @@ while True:
         tracks[cur_y][cur_x] = last_track
         cart['on_track'] = tracks[cart['y']][cart['x']]
 
-        # Check if crached
-        if len(set([f"{k['x']},{k['y']}" for k in carts])) < len(carts):
-            print('CRASH!!')
-            print(f"{cart['x']},{cart['y']}")
-            exit(0)
+
+        if cart['on_track'] == '<' or cart['on_track'] == '>' or cart['on_track'] == '^' or cart['on_track'] == 'v':
+            for c in carts:
+                if c['x'] == cart['x'] and c['y'] == cart['y']:
+                    c['crashed'] = True
+                    if c['on_track'] != '<' and c['on_track'] != '>' and c['on_track'] != '^' and c['on_track'] != 'v':
+                        tracks[c['y']][c['x']] = c['on_track']
+
+            continue
 
         if cart['on_track'] == '+':
             action = turn[cart['turn']]
