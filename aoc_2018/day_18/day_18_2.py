@@ -7,9 +7,30 @@ import numpy as np
 with open('input.txt') as fp:
     area = np.array([list(x) for x in fp.read().split('\n') if x])
 
-length = 10
-for m in range(1, 10+1):
+length = 1000000000
+seen = {}
 
+values = {}
+
+circle_start = 0
+circle_end = 0
+
+for m in range(0, length+1):
+
+    s = ''.join([''.join(x) for x in area])
+
+    woods = sum([sum([1 for x in y if x == '|']) for y in area])
+    yards = sum([sum([1 for x in y if x == '#']) for y in area])
+
+    values[m] = woods * yards
+
+    if s in seen:
+        circle_start = seen[s]
+        circle_end = m
+        break 
+
+    seen[s] = m
+    
     tmp = area.copy()
     for i in range(len(tmp)):
         for j in range(len(tmp[0])):
@@ -44,6 +65,12 @@ for m in range(1, 10+1):
                 if sum([1 for x in adjacent if x == '|']) >= 3:
                     area[i][j] = '|'
 
-woods = sum([sum([1 for x in y if x == '|']) for y in area])
-yards = sum([sum([1 for x in y if x == '#']) for y in area])
-print(woods * yards)
+
+# first circle at circle start
+length = length - circle_start
+
+circle_length = circle_end - circle_start 
+rest = circle_start + (length % circle_length)
+
+print(f'{values[rest]}')
+
