@@ -85,7 +85,7 @@ def run_program(program, ip_register, register=None):
 
 
 def main():
-    with open('input.txt') as fp:
+    with open('input-fixed.txt') as fp:
         ip_register = int(fp.readline().rstrip('\n').split(' ')[1])
         program = [x.split(' ') for x in fp.read().split('\n') if x]
 
@@ -96,7 +96,7 @@ def main():
     register = [0 for x in range(6)]
     register[0] = 1
 
-    print(run_program(program, ip_register))
+    print(run_program(program, ip_register, register=register))
 
 
 if __name__ == "__main__":
