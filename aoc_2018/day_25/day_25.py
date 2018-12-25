@@ -49,9 +49,6 @@ def main():
 
     print(constilations)
 
-    # for all start find the manhattan distrance to all other stars.
-    # Create a array of all start in range of each start
-    # create a deque of all start
-    # while not empty, pop one. i
+
 if __name__ == "__main__":
     main()
