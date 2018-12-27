@@ -1,5 +1,5 @@
 # --- Day 17: Reservoir Research ---
-# Part 1 and 2- ok
+# Part 1 and 2 - ok
 
 from collections import deque
 
