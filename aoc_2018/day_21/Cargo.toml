@@ -1,0 +1,7 @@
+[package]
+name = "aoc_2019_day_21"
+version = "0.1.0"
+authors = ["Sivert Hatteberg <sivert@hatteberg.org>"]
+edition = "2018"
+
+[dependencies]
