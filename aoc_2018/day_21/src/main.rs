@@ -1,9 +1,8 @@
-use std::collections::HashSet;
-use std::error::Error;
-use std::fs::File;
-use std::io::prelude::*;
-use std::path::Path;
+// --- Day 21: Chronal Conversion ---
+// Part 1 - ok
+// Part 2 - ok
 
+use std::collections::HashSet;
 
 #[derive(Debug)]
 struct Inst {
@@ -23,7 +22,6 @@ fn run_program(program: &Vec<Inst>, ip_reg: usize) {
         let cur = &program[ip];
 
         if ip == 28 {
-
             if halt_values.is_empty() {
                 println!("Part1: {}", &register[4]);
             }
@@ -71,8 +69,7 @@ fn run() -> () {
     let mut program: Vec<Inst> = vec![];
 
     for i in input {
-        let mut tmp: Vec<&str> = i.split(" ").collect();
-        println!("{:?}", tmp);
+        let tmp: Vec<&str> = i.split(" ").collect();
         program.push(Inst{op_code: tmp[0].to_string(), 
                           a: tmp[1].to_string().parse::<usize>().unwrap(), 
                           b: tmp[2].to_string().parse::<usize>().unwrap(), 
