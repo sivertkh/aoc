@@ -17,6 +17,7 @@ class IntcodeRunner(object):
 
     def add_input(self, input):
         self.input_buffer.put(input)
+        self._waiting = False
 
     def get_output(self):
         if self.output_buffer.empty():
@@ -55,9 +56,7 @@ class IntcodeRunner(object):
             elif opcode == 2:
                 self._mul(mode)
             elif opcode == 3:
-                print("INPUT!")
-                if not self._input(mode):
-                    print('Breaking for input')
+                if self.waiting() or not self._input(mode):
                     break
             elif opcode == 4:
                 self._output(mode)
@@ -199,4 +198,10 @@ class IntcodeRunner(object):
         mode = self.adjust_mode(mode, 1)
         self.relative_base += self.get_mode_value(mode[0], 1)
         self.ip += 2
-        #print(f'RB updated, new value: {self.relative_base}')
+        # print(f'RB updated, new value: {self.relative_base}')
+
+    @classmethod
+    def read_program_from_file(cls, path):
+        with open('./input.txt') as fp:
+            program_input = [int(x) for x in fp.read().split(',') if x]
+        return program_input

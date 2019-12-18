@@ -1,5 +1,5 @@
 # --- Day 6: Universal Orbit Map ---
-# Part 2 - ok
+# Part 2 -
 
 from networkx import Graph
 from networkx.algorithms.shortest_paths import shortest_path_length
