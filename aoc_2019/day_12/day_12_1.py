@@ -1,5 +1,5 @@
 # --- Day 12: The N-Body Problem ---
-# Part 1 -
+# Part 1 - ok
 
 import itertools
 
