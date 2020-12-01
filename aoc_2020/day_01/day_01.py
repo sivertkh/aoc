@@ -5,9 +5,8 @@ import itertools
 with open('./input.txt') as fp:
     data = set([int(x.rstrip()) for x in fp.readlines()])
 
-find = set([2020-x for x in data])
-result = list(set(data).intersection(set(find)))
-print(f"Part 1: {result[0]*result[1]}")
+result = list(data.intersection(set([2020-x for x in data])))
+print(f'Part 1: {result[0]*result[1]}')
 
 # --- Part Two ---
 
