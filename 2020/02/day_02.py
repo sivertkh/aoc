@@ -1,23 +1,16 @@
 # --- Day 1: Report Repair ---
-from collections import Counter
 
 
 def is_valid_pw_part1(rule, pw):
     nr, char = rule.split()
     start, end = [int(x) for x in nr.split('-')]
-    c = Counter(pw)
-    if char in c:
-        if c[char] >= start and c[char] <= end:
-            return True
-    return False
+    return start <= pw.count(char) <= end
 
 
 def is_valid_pw_part2(rule, pw):
     nr, char = rule.split()
     first, second = [int(x) for x in nr.split('-')]
-    if len([x for x in [pw[first], pw[second]] if x == char]) == 1:
-        return True
-    return False
+    return len([x for x in [pw[first], pw[second]] if x == char]) == 1
 
 
 with open('./input.txt') as fp:
