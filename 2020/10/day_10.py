@@ -1,6 +1,6 @@
 # --- Day 10: Adapter Array ---
 from collections import Counter
-
+from functools import lru_cache
 
 with open('input.txt') as fp:
     adapters = [int(x.rstrip()) for x in fp.readlines()]
@@ -13,17 +13,7 @@ differences = Counter([abs(j - i) for i, j in zip(adapters, adapters[1:])])
 print(f'Part 1: {differences[1] * differences[3]}')
 
 
-def memoize(f):
-    m = {}
-
-    def memoize(x):
-        if x not in m:
-            m[x] = f(x)
-        return m[x]
-    return memoize
-
-
-@memoize
+@lru_cache
 def find_path(pos):
     if pos == len(adapters) - 1:
         return 1
