@@ -7,7 +7,6 @@ from networkx.algorithms.traversal.breadth_first_search import bfs_tree
 
 nodes = {}
 
-with open('./input.txt') as fp:
     for rule in fp.readlines():
         r = re.sub(r'bags|bag', '', rule.rstrip()).replace('.', '').split(' contain ')
         nodes[r[0].strip()] = [list(re.match('(\d*) ([\w\s]*)', x).groups()) for x in r[1].split(', ') if 'no other' not in x ]

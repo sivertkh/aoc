@@ -1,6 +1,6 @@
 # --- Day 3: Squares With Three Sides ---
 
-import itertools
+import itertools'[]
 import numpy as np
 
 

@@ -1,6 +1,4 @@
 # --- Day 1: No Time for a Taxicab ---
-# Status: OK
-
 
 with open('./input.txt') as fp:
     path = [[x[0], int(x[1:])] for x in fp.read().rstrip().split(', ')]
