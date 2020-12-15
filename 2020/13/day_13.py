@@ -34,6 +34,6 @@ def find_step(start, step, shift, busses):
 diffs = [buss_times.index(str(x)) for x in buss_depart]
 start = 0
 step = buss_depart[0]
-for i in range(10):
+for i in range(len(buss_depart)+1):
     start, step = find_step(start, step, diffs, buss_depart[:i])
 print(f'Part 2: {start}')
