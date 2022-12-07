@@ -1,27 +1,20 @@
 # --- Day 7: No Space Left On Device ---
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 from aocd.models import Puzzle
 
 
 @dataclass
-class MyFile:
-    name: str
-    size: int
-
-
-@dataclass
 class Folder:
     name: int
     parent_dir: Optional["Folder"]
-    folders: dict["Folder"]
-    files: dict[MyFile]
+    folders: dict["Folder"] = field(default_factory=dict)
+    size_of_files: int = 0
 
     def folder_size(self):
-        file_size = sum([x.size for x in self.files.values()])
-        return file_size + sum([x.folder_size() for x in self.folders.values()])
+        return self.size_of_files + sum([x.folder_size() for x in self.folders.values()])
 
     def path(self):
         if self.parent_dir == None:
@@ -40,7 +33,7 @@ def solve():
             case ["$", "cd", "/"]:
                 if not root_dir:
                     root_dir = Folder(
-                        name=command[2], parent_dir=None, folders={}, files={}
+                        name=command[2], parent_dir=None, folders={}
                     )
                     all_dirs[root_dir.path()] = root_dir
                 cur_dir = root_dir
@@ -51,23 +44,19 @@ def solve():
                     cur_dir = cur_dir.folders[folder_name]
                 else:
                     new_folder = Folder(
-                        name=folder_name, parent_dir=cur_dir, folders={}, files={}
+                        name=folder_name, parent_dir=cur_dir, folders={}
                     )
                     all_dirs[new_folder.path()] = new_folder
                     cur_dir = new_folder
             case ["dir", folder_name]:
                 if folder_name not in cur_dir.folders:
                     new_folder = Folder(
-                        name=folder_name, parent_dir=cur_dir, folders={}, files={}
+                        name=folder_name, parent_dir=cur_dir, folders={}
                     )
                     cur_dir.folders[command[1]] = new_folder
                     all_dirs[new_folder.path()] = new_folder
-            case [file_size, file_name]:
-                if file_size != "$":
-                    # Only files left
-                    cur_dir.files[file_name] = MyFile(
-                        name=file_name, size=int(file_size)
-                    )
+            case [file_size, _] if file_size != "$":
+                cur_dir.size_of_files += int(file_size)
 
     total_size = 70000000
     free_space = total_size - root_dir.folder_size()
