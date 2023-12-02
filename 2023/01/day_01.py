@@ -1,3 +1,4 @@
+# AOC 2023
 # --- Day 1: Trebuchet?! ---
 from typing import List
 
