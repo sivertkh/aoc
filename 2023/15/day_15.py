@@ -48,4 +48,3 @@ print(f"Part 1: {part_1}")
 print(f"Part 2: {part_2}")
 assert part_1 == 510388
 assert part_2 == 291774
-# assert part_2 ==
