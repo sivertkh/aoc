@@ -11,7 +11,7 @@ def solve():
             [list(map(int, x.split("   "))) for x in fp.read().split("\n") if x], axis=0
         )
     c = coll.Counter(data[:, 1])
-    return sum([abs(a - b) for a, b in data]), sum([x * c[x] for x in data[:, 0]])
+    return np.sum(np.absolute(np.diff(data))), sum([x * c[x] for x in data[:, 0]])
 
 
 part_1, part_2 = solve()
