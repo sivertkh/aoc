@@ -8,7 +8,7 @@ import numpy as np
 def solve():
     with open("input.txt", encoding="utf-8") as fp:
         data = np.sort(
-            [list(map(int, x.split("   "))) for x in fp.read().split("\n") if x], axis=0
+            [list(map(int, x.split())) for x in fp.read().split("\n") if x], axis=0
         )
     c = coll.Counter(data[:, 1])
     return np.sum(np.absolute(np.diff(data))), sum([x * c[x] for x in data[:, 0]])
