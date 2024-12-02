@@ -12,7 +12,7 @@ def is_sorted(a: list[int]) -> bool:
 def is_safe(r: list[int]) -> bool:
     """Check if a report is safe."""
     d = np.abs(np.diff(r))
-    return np.all((d <= 3) & (np.all(d > 0))) and is_sorted(r)
+    return np.all((d <= 3) & (d > 0)) and is_sorted(r)
 
 
 def solve():
