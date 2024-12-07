@@ -12,8 +12,8 @@ def sum_part_1(target, cur_sum, numbers):
     if cur_sum > target:
         return False
 
-    return sum_part_1(target, cur_sum + numbers[0], numbers[1:]) or sum_part_1(
-        target, cur_sum * numbers[0], numbers[1:]
+    return sum_part_1(target, cur_sum * numbers[0], numbers[1:]) or sum_part_1(
+        target, cur_sum + numbers[0], numbers[1:]
     )
 
 
@@ -26,9 +26,9 @@ def sum_part_2(target, cur_sum, numbers):
         return False
 
     return (
-        sum_part_2(target, cur_sum + numbers[0], numbers[1:])
+        sum_part_2(target, int(f"{cur_sum}{numbers[0]}"), numbers[1:])
         or sum_part_2(target, cur_sum * numbers[0], numbers[1:])
-        or sum_part_2(target, int(f"{cur_sum}{numbers[0]}"), numbers[1:])
+        or sum_part_2(target, cur_sum + numbers[0], numbers[1:])
     )
 
 
@@ -37,8 +37,16 @@ def solve():
         data = [x.split(":") for x in fp.read().split("\n") if x]
         data = [[int(x), list(map(int, y.strip().split()))] for x, y in data]
 
-    p1 = sum([target for target, numbers in data if sum_part_1(target, 0, numbers)])
-    p2 = sum([target for target, numbers in data if sum_part_2(target, 0, numbers)])
+    p1_targets = [target for target, numbers in data if sum_part_1(target, 0, numbers)]
+    p1 = sum(p1_targets)
+
+    p2 = p1 + sum(
+        [
+            target
+            for target, numbers in data
+            if target not in p1_targets and sum_part_2(target, 0, numbers)
+        ]
+    )
     return p1, p2
 
 
