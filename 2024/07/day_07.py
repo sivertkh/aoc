@@ -4,7 +4,7 @@
 import operator
 
 
-def sum_exists(target, cur_sum, numbers, operators):
+def sum_part_1(target, cur_sum, numbers):
 
     if not numbers:
         return target == cur_sum
@@ -12,19 +12,23 @@ def sum_exists(target, cur_sum, numbers, operators):
     if cur_sum > target:
         return False
 
-    return any(
-        sum_exists(target, op(cur_sum, numbers[0]), numbers[1:], operators)
-        for op in operators
+    return sum_part_1(target, cur_sum + numbers[0], numbers[1:]) or sum_part_1(
+        target, cur_sum * numbers[0], numbers[1:]
     )
 
 
-def sum_of_valid(data, operators):
-    return sum(
-        [
-            target
-            for target, numbers in data
-            if sum_exists(target, 0, numbers, operators)
-        ]
+def sum_part_2(target, cur_sum, numbers):
+
+    if not numbers:
+        return target == cur_sum
+
+    if cur_sum > target:
+        return False
+
+    return (
+        sum_part_2(target, cur_sum + numbers[0], numbers[1:])
+        or sum_part_2(target, cur_sum * numbers[0], numbers[1:])
+        or sum_part_2(target, int(f"{cur_sum}{numbers[0]}"), numbers[1:])
     )
 
 
@@ -33,9 +37,9 @@ def solve():
         data = [x.split(":") for x in fp.read().split("\n") if x]
         data = [[int(x), list(map(int, y.strip().split()))] for x, y in data]
 
-    return sum_of_valid(data, [operator.add, operator.mul]), sum_of_valid(
-        data, [operator.add, operator.mul, lambda a, b: int(f"{a}{b}")]
-    )
+    p1 = sum([target for target, numbers in data if sum_part_1(target, 0, numbers)])
+    p2 = sum([target for target, numbers in data if sum_part_2(target, 0, numbers)])
+    return p1, p2
 
 
 part_1, part_2 = solve()
