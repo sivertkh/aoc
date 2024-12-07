@@ -1,11 +1,8 @@
 # AOC 2024
 # --- Day 7: Bridge Repair ---
 
-import operator
-
 
 def sum_part_1(target, cur_sum, numbers):
-
     if not numbers:
         return target == cur_sum
 
@@ -18,7 +15,6 @@ def sum_part_1(target, cur_sum, numbers):
 
 
 def sum_part_2(target, cur_sum, numbers):
-
     if not numbers:
         return target == cur_sum
 
@@ -37,14 +33,18 @@ def solve():
         data = [x.split(":") for x in fp.read().split("\n") if x]
         data = [[int(x), list(map(int, y.strip().split()))] for x, y in data]
 
-    p1_targets = [target for target, numbers in data if sum_part_1(target, 0, numbers)]
+    p1_targets = [
+        target
+        for target, numbers in data
+        if sum_part_1(target, numbers[0], numbers[1:])
+    ]
     p1 = sum(p1_targets)
 
     p2 = p1 + sum(
         [
             target
             for target, numbers in data
-            if target not in p1_targets and sum_part_2(target, 0, numbers)
+            if target not in p1_targets and sum_part_2(target, numbers[0], numbers[1:])
         ]
     )
     return p1, p2
