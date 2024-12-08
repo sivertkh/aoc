@@ -66,7 +66,6 @@ def solve():
 
                     x = diff_x
                     while a[0] - x >= 0:
-                        data[a[0] - x][a[1]] = "#"
                         p2.add((a[0] - x, a[1]))
                         x += diff_x
                     x = diff_x
