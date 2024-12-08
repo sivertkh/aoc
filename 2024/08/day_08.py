@@ -16,8 +16,7 @@ def solve():
             if y != ".":
                 antenna_types.add(y)
 
-    p1 = set()
-    p2 = set()
+    p1, p2 = set(), set()
     for pos in [zip(*np.where(data == x)) for x in antenna_types]:
         for a, b in it.combinations(pos, 2):
             diff_x = abs(a[0] - b[0])
