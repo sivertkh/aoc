@@ -3,10 +3,8 @@
 
 
 def get_register_value(name, register):
-
     if name not in register:
         register[name] = 0
-
     return register[name]
 
 
@@ -16,6 +14,7 @@ def solve():
     with open("input.txt", encoding="utf8") as fp:
         inst = [x.rstrip().split() for x in fp.read().split("\n") if x]
 
+    highest = 0
     for i in inst:
         reg = i[0]
         instruction = i[1]
@@ -35,10 +34,15 @@ def solve():
                 else:
                     register[reg] = 0 - value
 
-    return max([v for k, v in register.items()]), 0
+            if register[reg] > highest:
+                highest = register[reg]
+
+    return max([v for k, v in register.items()]), highest
 
 
 if __name__ == "__main__":
     part1, part2 = solve()
     print(f"Part 1: {part1}")
     print(f"Part 2: {part2}")
+    assert part1 == 3089
+    assert part2 == 5391
