@@ -25,12 +25,10 @@ def solve():
                 G.add_edge((x, y), (x, y + 1))
 
     p1, p2 = 0, 0
-    for end in zip(*np.where(data == 9)):
-        for start in zip(*np.where(data == 0)):
-            s = (start[0], start[1])
-            e = (end[0], end[1])
+    for e in zip(*np.where(data == 9)):
+        for s in zip(*np.where(data == 0)):
             try:
-                p = len(list(nx.all_simple_paths(G, s, e)))
+                p = len(list(nx.all_simple_paths(G, (s[0], s[1]), (e[0], e[1]))))
                 if p > 0:
                     p1 += 1
                     p2 += p
