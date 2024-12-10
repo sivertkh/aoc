@@ -29,10 +29,11 @@ def solve():
         for start in zip(*np.where(data == 0)):
             s = (start[0], start[1])
             e = (end[0], end[1])
-            if nx.has_path(G, s, e):
-                p1 += 1
             try:
-                p2 += len(list(nx.all_simple_paths(G, s, e)))
+                p = len(list(nx.all_simple_paths(G, s, e)))
+                if p > 0:
+                    p1 += 1
+                    p2 += p
             except nx.exception.NetworkXNoPath:
                 continue
     return p1, p2
