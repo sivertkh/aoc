@@ -16,3 +16,6 @@ input
 input.txt
 sample
 sample.txt
+
+# Macos stuff.
+.DS_Store
