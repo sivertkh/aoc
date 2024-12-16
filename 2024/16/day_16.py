@@ -1,341 +1,123 @@
 # AOC 2024
-#
+# --- Day 16: Reindeer Maze ---
 
-import sys
-
+import collections as coll
 
 import networkx as nx
-import collections as coll
-import datetime as dt
-import itertools as it
-import math
-from operator import itemgetter as ig
-import pprint as pp
-import re
 import numpy as np
-import functools
-
-sys.setrecursionlimit(10000)
 
 
-def find_sp(data, x, y, cur_cost, visited, direction):
+def create_graph(data):
+    """Generate graph of the maze.
 
-    if data[x][y] == "E":
-        return cur_cost
-
-    costs = []
-    visited.append((x, y))
-
-    match direction:
-        case "N":
-            if (
-                x - 1 >= 0
-                and (x - 1, y) not in visited
-                and data[x - 1][y] in [".", "E"]
-            ):
-                res = find_sp(data, x - 1, y, cur_cost + 1, visited.copy(), "N")
-
-                if res != -1:
-                    costs.append(res)
-            # move 90 degrees in both directions
-            # Dir = W
-            if (
-                y - 1 >= 0
-                and (x, y - 1) not in visited
-                and data[x][y - 1] in [".", "E"]
-            ):
-                res = find_sp(data, x, y - 1, cur_cost + 1001, visited.copy(), "W")
-
-                if res != -1:
-                    costs.append(res)
-            # Dir = E
-            if (
-                y + 1 < len(data[0])
-                and (x, y + 1) not in visited
-                and data[x][y + 1] in [".", "E"]
-            ):
-                res = find_sp(data, x, y + 1, cur_cost + 1001, visited.copy(), "E")
-
-                if res != -1:
-                    costs.append(res)
-
-        case "S":
-            if (
-                x + 1 < len(data)
-                and (x + 1, y) not in visited
-                and data[x + 1][y] in [".", "E"]
-            ):
-                res = find_sp(data, x + 1, y, cur_cost + 1, visited.copy(), "S")
-
-                if res != -1:
-                    costs.append(res)
-            # move 90 degrees in both directions
-            # Dir = W
-            if (
-                y - 1 >= 0
-                and (x, y - 1) not in visited
-                and data[x][y - 1] in [".", "E"]
-            ):
-                res = find_sp(data, x, y - 1, cur_cost + 1001, visited.copy(), "W")
-
-                if res != -1:
-                    costs.append(res)
-            # Dir = E
-            if (
-                y + 1 < len(data[0])
-                and (x, y + 1) not in visited
-                and data[x][y + 1] in [".", "E"]
-            ):
-                res = find_sp(data, x, y + 1, cur_cost + 1001, visited.copy(), "E")
-
-                if res != -1:
-                    costs.append(res)
-        case "E":
-            if (
-                y + 1 < len(data[0])
-                and (x, y + 1) not in visited
-                and data[x][y + 1] in [".", "E"]
-            ):
-                res = find_sp(data, x, y + 1, cur_cost + 1, visited.copy(), "E")
-
-                if res != -1:
-                    costs.append(res)
-
-            # move 90 degrees in both directions
-            # Dir = N
-            if (
-                x - 1 >= 0
-                and (x - 1, y) not in visited
-                and data[x - 1][y] in [".", "E"]
-            ):
-                res = find_sp(data, x - 1, y, cur_cost + 1001, visited.copy(), "N")
-
-                if res != -1:
-                    costs.append(res)
-            # Dir = S
-            if (
-                x + 1 < len(data)
-                and (x + 1, y) not in visited
-                and data[x + 1][y] in [".", "E"]
-            ):
-                res = find_sp(data, x + 1, y, cur_cost + 1001, visited.copy(), "S")
-
-                if res != -1:
-                    costs.append(res)
-        case "W":
-            if (
-                y - 1 >= 0
-                and (x, y - 1) not in visited
-                and data[x][y - 1] in [".", "E"]
-            ):
-                res = find_sp(data, x, y - 1, cur_cost + 1, visited.copy(), "W")
-
-                if res != -1:
-                    costs.append(res)
-            # move 90 degrees in both directions
-            # Dir = N
-            if (
-                x - 1 >= 0
-                and (x - 1, y) not in visited
-                and data[x - 1][y] in [".", "E"]
-            ):
-                res = find_sp(data, x - 1, y, cur_cost + 1001, visited.copy(), "N")
-
-                if res != -1:
-                    costs.append(res)
-
-            # Dir = S
-            if (
-                x + 1 < len(data)
-                and (x + 1, y) not in visited
-                and data[x + 1][y] in [".", "E"]
-            ):
-                res = find_sp(data, x + 1, y, cur_cost + 1001, visited.copy(), "S")
-
-                if res != -1:
-                    costs.append(res)
-
-    if not costs:
-        # No paths to end..
-        return -1
-
-    return min(costs)
-
-
-def graph_version(data):
+    Turns are handled by dividing N/S and E/W into there own "layer".
+    A turn then become a edge between the two layers.
+    """
 
     s_x, s_y = next(zip(*np.where(data == "S")))
     e_x, e_y = next(zip(*np.where(data == "E")))
 
-    # paths = np.where(data == ".")
+    data[s_x][s_y] = "."
+    data[e_x][e_y] = "."
 
-    G = nx.DiGraph()
+    edges = []
+    check_pos = coll.deque([(s_x, s_y, True)])
+    visited = set()
 
-    paths = coll.deque()
+    loop_iter = 0
 
-    paths.append((s_x, s_y, "E"))
+    while check_pos:
+        loop_iter += 1
+        cur_node = check_pos.popleft()
+        x, y, lower_level = cur_node
+        visited.add((x, y, lower_level))
+        if lower_level:
+            # On the "lower" E/W plane
+            if data[x][y + 1] == ".":
+                to_node = (x, y + 1, lower_level)
+                edges.append((cur_node, to_node, 1))
 
-    visited = []
+                if to_node not in visited and to_node not in check_pos:
+                    check_pos.append(to_node)
 
-    while paths:
-        x, y, direction = paths.popleft()
+            if data[x][y - 1] == ".":
+                to_node = (x, y - 1, lower_level)
+                edges.append((cur_node, to_node, 1))
 
-        visited.append((x, y, direction))
+                if to_node not in visited and to_node not in check_pos:
+                    check_pos.append(to_node)
 
-        match direction:
-            case "N":
-                if (
-                    x - 1 >= 0
-                    and (x - 1, y, "N") not in visited
-                    and data[x - 1][y] in [".", "E"]
-                ):
-                    j = 1
-                    while True:
-                        if j >= 0 and data[x - j][y] != "#":
-                            j += 1
+            if data[x - 1][y] == "." or data[x + 1][y] == ".":
+                to_node = (x, y, not lower_level)
+                edges.append((cur_node, to_node, 1000))
+                if to_node not in visited and to_node not in check_pos:
+                    check_pos.append(to_node)
 
-                    G.add_edge((x, y, "N"), (x - 1, y, "N"), weight=1)
-                    paths.append((x - 1, y, "N"))
+        else:
+            # On the "higher" N/S plane
+            if data[x - 1][y] == ".":
+                to_node = (x - 1, y, lower_level)
+                edges.append((cur_node, to_node, 1))
 
-                # move 90 degrees in both directions
-                # Dir = W
-                if (
-                    y - 1 >= 0
-                    and (x, y - 1, "W") not in visited
-                    and data[x][y - 1] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "N"), (x, y - 1, "W"), weight=1001)
-                    paths.append((x, y - 1, "W"))
+                if to_node not in visited and to_node not in check_pos:
+                    check_pos.append(to_node)
 
-                # Dir = E
-                if (
-                    y + 1 < len(data[0])
-                    and (x, y + 1, "E") not in visited
-                    and data[x][y + 1] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "N"), (x, y + 1, "E"), weight=1001)
-                    paths.append((x, y + 1, "E"))
+            if data[x + 1][y] == ".":
+                to_node = (x + 1, y, lower_level)
+                edges.append((cur_node, to_node, 1))
 
-            case "S":
-                if (
-                    x + 1 < len(data)
-                    and (x + 1, y, "S") not in visited
-                    and data[x + 1][y] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "S"), (x + 1, y, "S"), weight=1)
-                    paths.append((x + 1, y, "S"))
+                if to_node not in visited and to_node not in check_pos:
+                    check_pos.append(to_node)
 
-                # move 90 degrees in both directions
-                # Dir = W
-                if (
-                    y - 1 >= 0
-                    and (x, y - 1, "W") not in visited
-                    and data[x][y - 1] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "S"), (x, y - 1, "W"), weight=1001)
-                    paths.append((x, y - 1, "W"))
+            if data[x][y - 1] == "." or data[x][y + 1] == ".":
+                to_node = (x, y, not lower_level)
+                edges.append((cur_node, to_node, 1000))
+                if to_node not in visited and to_node not in check_pos:
+                    check_pos.append(to_node)
 
-                # Dir = E
-                if (
-                    y + 1 < len(data[0])
-                    and (x, y + 1, "E") not in visited
-                    and data[x][y + 1] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "S"), (x, y + 1, "E"), weight=1001)
-                    paths.append((x, y + 1, "E"))
-
-            case "E":
-                if (
-                    y + 1 < len(data[0])
-                    and (x, y + 1, "E") not in visited
-                    and data[x][y + 1] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "E"), (x, y + 1, "E"), weight=1)
-                    paths.append((x, y + 1, "E"))
-
-                # move 90 degrees in both directions
-                # Dir = N
-                if (
-                    x - 1 >= 0
-                    and (x - 1, y, "N") not in visited
-                    and data[x - 1][y] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "E"), (x - 1, y, "N"), weight=1001)
-                    paths.append((x - 1, y, "N"))
-
-                # Dir = S
-                if (
-                    x + 1 < len(data)
-                    and (x + 1, y, "S") not in visited
-                    and data[x + 1][y] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "E"), (x + 1, y, "S"), weight=1001)
-                    paths.append((x + 1, y, "S"))
-
-            case "W":
-                if (
-                    y - 1 >= 0
-                    and (x, y - 1, "W") not in visited
-                    and data[x][y - 1] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "W"), (x, y - 1, "W"), weight=1)
-                    paths.append((x, y - 1, "W"))
-
-                # move 90 degrees in both directions
-                # Dir = N
-                if (
-                    x - 1 >= 0
-                    and (x - 1, y, "N") not in visited
-                    and data[x - 1][y] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "W"), (x - 1, y, "N"), weight=1001)
-                    paths.append((x - 1, y, "N"))
-
-                # Dir = S
-                if (
-                    x + 1 < len(data)
-                    and (x + 1, y, "S") not in visited
-                    and data[x + 1][y] in [".", "E"]
-                ):
-                    G.add_edge((x, y, "W"), (x + 1, y, "S"), weight=1001)
-                    paths.append((x + 1, y, "S"))
-
+    G = nx.Graph()
+    G.add_weighted_edges_from(edges)
     return G
-
-
-def solve_part_1(data):
-    res = 0
-
-    s_x, s_y = next(zip(*np.where(data == "S")))
-    e_x, e_y = next(zip(*np.where(data == "E")))
-    print("Graph!!")
-    G = graph_version(data)
-    print("after creation")
-    test1 = nx.shortest_path_length(
-        G, (s_x, s_y, "E"), (e_x, e_y, "E"), weight="weight"
-    )
-    test2 = nx.shortest_path_length(
-        G, (s_x, s_y, "E"), (e_x, e_y, "N"), weight="weight"
-    )
-
-    return min([test1, test2])
-
-
-def solve_part_2(data):
-    res = 0
-
-    return res
 
 
 def solve():
     with open("input.txt", encoding="utf-8") as fp:
         data = np.array([list(x) for x in fp.read().split("\n") if x])
 
-    return solve_part_1(data), solve_part_2(data)
+    s_x, s_y = next(zip(*np.where(data == "S")))
+    e_x, e_y = next(zip(*np.where(data == "E")))
+
+    G = create_graph(data)
+
+    path_1 = nx.shortest_path_length(
+        G, (s_x, s_y, True), (e_x, e_y, False), weight="weight"
+    )
+    path_2 = nx.shortest_path_length(
+        G, (s_x, s_y, True), (e_x, e_y, True), weight="weight"
+    )
+
+    if path_1 < path_2:
+        res_1 = path_1
+        paths = nx.all_shortest_paths(
+            G, (s_x, s_y, True), (e_x, e_y, False), weight="weight"
+        )
+    else:
+        res_1 = path_2
+        paths = nx.all_shortest_paths(
+            G, (s_x, s_y, True), (e_x, e_y, True), weight="weight"
+        )
+
+    res_2 = set()
+    for p in paths:
+        for x, y, _ in p:
+            res_2.add((x, y))
+
+    return res_1, len(res_2)
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-# assert part_1 ==
-# assert part_2 ==
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 93436
+    assert part_2 == 486
