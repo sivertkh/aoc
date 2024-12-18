@@ -3,6 +3,8 @@
 
 import re
 
+import z3
+
 
 def get_combo_value(registry, value):
 
@@ -72,40 +74,66 @@ def solve_part_1(registry, prog):
     return ",".join(output_buffer)
 
 
-def solve_part_2(registry, program):
-    pass
-    # for x in program:
-    #     b = a % 8
-    #     b = b ^ 5
-    #     c = a / (1 << b)
-    #     b = b ^ c
-    #     b = b ^ 6
-    #     a = a / (1 << 3)
-    #     (b % 8) == x
+def solve_part_2_rev(program, ans):
+    if program == []:
+        return ans
+
+    for i in range(8):
+        a = ans << 3 | i
+        b = a % 8
+        b = b ^ 5
+        c = a >> b
+        b = b ^ 6
+        # a = a >> 3 # Skip instruction to get the correct answer directly for the next call.
+        b = b ^ c
+        if b % 8 == program[-1]:
+            s = solve_part_2_rev(program[:-1], a)
+            if s:
+                return s
+
+
+def solve_part_2_z3(program):
+    o = z3.Optimize()
+    s = z3.BitVec("s", 64)
+    a = s
+    b = 0
+    c = 0
+    for x in program:
+        b = a % 8
+        b = b ^ 5
+        c = a >> b
+        b = b ^ 6
+        a = a >> 3
+        b = b ^ c
+        o.add((b % 8) == x)
+
+    o.add(a == 0)
+    o.minimize(s)
+
+    if o.check() == z3.sat:
+        return o.model().eval(s)
+
+    return -1
 
 
 def solve():
     with open("input.txt", encoding="utf-8") as fp:
-        a = [x for x in fp.read().split("\n\n") if x]
+        registry, program = [x for x in fp.read().split("\n\n") if x]
 
-        reg, prog = a[0], a[1]
+    program = list(map(int, re.findall(r"-?[0-9]\d*", program)))
+    registry = {
+        chr(65 + i): int(x) for i, x in enumerate(re.findall(r"-?[0-9]\d*", registry))
+    }
 
-        prog = list(map(int, re.findall(r"-?[0-9]\d*", prog)))
+    p2_1 = solve_part_2_rev(program, 0)
+    p2_2 = solve_part_2_z3(program)
+    assert p2_1 == p2_2
 
-        registry = {}
-        for i, x in enumerate(re.findall(r"-?[0-9]\d*", reg)):
-            registry[chr(65 + i)] = int(x)
-
-    # print(prog)
-    # print(registry)
-
-    data = []
-
-    return solve_part_1(registry, prog), solve_part_2(registry, prog)
+    return solve_part_1(registry, program), p2_2
 
 
 part_1, part_2 = solve()
 print(f"Part 1: {part_1}")
 print(f"Part 2: {part_2}")
 assert part_1 == "3,6,3,7,0,7,0,3,0"
-# assert part_2 ==
+assert part_2 == 136904920099226
