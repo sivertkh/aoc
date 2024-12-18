@@ -4,7 +4,7 @@
 import networkx as nx
 
 
-def shortest_path_length(data, steps):
+def create_graph(data, steps):
     memory = [["." for _ in range(71)] for _ in range(71)]
 
     for i in range(steps):
@@ -27,11 +27,12 @@ def shortest_path_length(data, steps):
 
     G = nx.Graph()
     G.add_edges_from(edges)
-    return nx.shortest_path_length(G, (0, 0), (len(memory) - 1, len(memory[0]) - 1))
+    return G
 
 
 def solve_part_1(data):
-    return shortest_path_length(data, steps=1024)
+    G = create_graph(data, steps=1024)
+    return nx.shortest_path_length(G, (0, 0), (70, 70))
 
 
 def find_shortest_no_path(data, steps_start, steps_end):
@@ -40,14 +41,12 @@ def find_shortest_no_path(data, steps_start, steps_end):
     if steps == steps_start:
         y, x = data[steps_start]
         return f"{y},{x}"
-    try:
-        shortest_path_length(data, steps=steps)
-    except nx.NetworkXNoPath:
-        # No path. ans is between new_start and i_new
-        return find_shortest_no_path(data, steps_start, steps)
-    else:
-        # Found path, ans is between new_i and i_end
+
+    G = create_graph(data, steps=steps)
+    if nx.has_path(G, (0, 0), (70, 70)):
         return find_shortest_no_path(data, steps, steps_end)
+
+    return find_shortest_no_path(data, steps_start, steps)
 
 
 def solve_part_2(data):
