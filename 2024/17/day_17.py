@@ -7,17 +7,13 @@ import z3
 
 
 def get_combo_value(registry, value):
-
-    if value <= 3:
-        return value
-    if value == 4:
-        return registry["A"]
-    if value == 5:
-        return registry["B"]
-    if value == 6:
-        return registry["C"]
-    if value == 7:
-        raise NotImplementedError
+    mapping = {
+        3: value,
+        4: registry["A"],
+        5: registry["B"],
+        6: registry["C"],
+    }
+    return mapping.get(value, None)
 
 
 def solve_part_1(registry, prog):
