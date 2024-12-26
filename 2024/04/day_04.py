@@ -1,10 +1,10 @@
-# AOC 2023
+# AOC 2024
 # --- Day 4: Ceres Search ---
 
 import numpy as np
 
 
-def solve_part_1(data):
+def solve_part_1(data: np.ndarray) -> int:
 
     res = 0
     for x in data:
@@ -26,7 +26,7 @@ def solve_part_1(data):
     return res
 
 
-def solve_part_2(data):
+def solve_part_2(data: np.ndarray) -> int:
 
     targets = [["M", "A", "S"], ["S", "A", "M"]]
     res = 0
@@ -41,15 +41,16 @@ def solve_part_2(data):
     return res
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         data = np.array([list(x) for x in fp.read().split("\n") if x])
 
     return solve_part_1(data), solve_part_2(data)
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 2524
-assert part_2 == 1873
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 2524
+    assert part_2 == 1873

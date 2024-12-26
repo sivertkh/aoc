@@ -31,8 +31,9 @@ def solve():
     )
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 182081
-assert part_2 == 216318908621637
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 182081
+    assert part_2 == 216318908621637

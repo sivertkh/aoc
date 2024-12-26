@@ -4,16 +4,15 @@
 import functools
 
 
-def compare(order, a: int, b: int) -> int:
+def compare(order: list[int], a: int, b: int) -> int:
     if a == b:
         return 0
     if b in [k[1] for k in order if k[0] == a]:
         return -1
-
     return 1
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         order, updates = [x for x in fp.read().split("\n\n") if x]
         order = [
@@ -33,12 +32,12 @@ def solve():
             p1 += update[len(update) // 2]
         else:
             p2 += s[len(s) // 2]
-
     return p1, p2
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 4790
-assert part_2 == 6319
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 4790
+    assert part_2 == 6319

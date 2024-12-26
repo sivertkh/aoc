@@ -4,15 +4,11 @@
 import numpy as np
 
 
-def solve_part_1(keys, locks):
+def solve_part_1(keys: list, locks: list) -> int:
     return sum([sum([1 if np.all(l + k <= 5) else 0 for k in keys]) for l in locks])
 
 
-def solve_part_2(data):
-    return 0
-
-
-def solve():
+def solve() -> int:
     with open("input.txt", encoding="utf-8") as fp:
         data = [
             np.array([list(y) for y in x.split("\n") if y])
@@ -27,12 +23,10 @@ def solve():
         else:
             keys.append(np.argmax(np.flipud(x), axis=0) - 1)
 
-    return solve_part_1(keys, locks), solve_part_2(data)
+    return solve_part_1(keys, locks)
 
 
 if __name__ == "__main__":
-    part_1, part_2 = solve()
+    part_1 = solve()
     print(f"Part 1: {part_1}")
-    print(f"Part 2: {part_2}")
     assert part_1 == 2885
-    # assert part_2 ==

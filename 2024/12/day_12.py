@@ -121,15 +121,16 @@ def solve_part_2(data) -> int:
     )
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         data = np.array([list(x) for x in fp.read().split("\n") if x])
     data = divide_into_fields(data)
     return solve_part_1(data), solve_part_2(data)
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 1533024
-assert part_2 == 910066
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 1533024
+    assert part_2 == 910066

@@ -70,7 +70,7 @@ class FreeSpace:
         return self.end < other.end
 
 
-def solve_part_1(data):
+def solve_part_1(data: list[int]) -> int:
 
     files, free_blocks = [], []
     block_nr, file_nr = 0, 0

@@ -4,7 +4,7 @@
 import networkx as nx
 
 
-def create_graph(data, steps):
+def create_graph(data: list, steps: int) -> nx.Graph:
     memory = [["." for _ in range(71)] for _ in range(71)]
 
     for i in range(steps):
@@ -30,12 +30,12 @@ def create_graph(data, steps):
     return G
 
 
-def solve_part_1(data):
+def solve_part_1(data: list) -> int:
     G = create_graph(data, steps=1024)
     return nx.shortest_path_length(G, (0, 0), (70, 70))
 
 
-def find_shortest_no_path(data, steps_start, steps_end):
+def find_shortest_no_path(data: list, steps_start: int, steps_end: int) -> str:
     steps = (steps_start + steps_end) // 2
 
     if steps == steps_start:
@@ -49,18 +49,19 @@ def find_shortest_no_path(data, steps_start, steps_end):
     return find_shortest_no_path(data, steps_start, steps)
 
 
-def solve_part_2(data):
+def solve_part_2(data: list) -> str:
     return find_shortest_no_path(data, 0, len(data) - 1)
 
 
-def solve():
+def solve() -> tuple[int, str]:
     with open("input.txt", encoding="utf-8") as fp:
         data = [list(map(int, x.split(","))) for x in fp.read().split("\n") if x]
     return solve_part_1(data), solve_part_2(data)
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 416
-assert part_2 == "50,23"
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 416
+    assert part_2 == "50,23"

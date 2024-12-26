@@ -1,4 +1,4 @@
-# AOC 2023
+# AOC 2024
 # --- Day 3: Mull It Over ---
 
 
@@ -6,12 +6,11 @@ import collections as coll
 import re
 
 
-def solve_part_1(data):
-
+def solve_part_1(data: str) -> int:
     return sum([int(a) * int(b) for a, b in re.findall(r"mul\((\d+),(\d+)\)", data)])
 
 
-def solve_part_2(data):
+def solve_part_2(data: str) -> int:
     donts = coll.deque([m.end() for m in re.finditer(r"don't\(\)", data)])
     dos = coll.deque([m.end() for m in re.finditer(r"do\(\)", data)])
 
@@ -45,14 +44,15 @@ def solve_part_2(data):
     return res
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         data = fp.read().strip()
     return solve_part_1(data), solve_part_2(data)
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 191183308
-assert part_2 == 92082041
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 191183308
+    assert part_2 == 92082041

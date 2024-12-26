@@ -6,7 +6,7 @@ import re
 import z3
 
 
-def get_combo_value(registry, value):
+def get_combo_value(registry: dict, value: int) -> int:
     mapping = {
         3: value,
         4: registry["A"],
@@ -16,7 +16,7 @@ def get_combo_value(registry, value):
     return mapping.get(value, None)
 
 
-def solve_part_1(registry, prog):
+def solve_part_1(registry: dict, prog: list) -> str:
     res = 0
 
     output_buffer = []
@@ -70,7 +70,7 @@ def solve_part_1(registry, prog):
     return ",".join(output_buffer)
 
 
-def solve_part_2_rev(program, ans):
+def solve_part_2_rev(program: list, ans: int) -> int:
     if program == []:
         return ans
 
@@ -88,7 +88,7 @@ def solve_part_2_rev(program, ans):
                 return s
 
 
-def solve_part_2_z3(program):
+def solve_part_2_z3(program: list) -> int:
     o = z3.Optimize()
     s = z3.BitVec("s", 64)
     a = s
@@ -112,7 +112,7 @@ def solve_part_2_z3(program):
     return -1
 
 
-def solve():
+def solve() -> tuple[str, int]:
     with open("input.txt", encoding="utf-8") as fp:
         registry, program = [x for x in fp.read().split("\n\n") if x]
 
@@ -124,12 +124,12 @@ def solve():
     p2_1 = solve_part_2_rev(program, 0)
     p2_2 = solve_part_2_z3(program)
     assert p2_1 == p2_2
-
     return solve_part_1(registry, program), p2_2
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == "3,6,3,7,0,7,0,3,0"
-assert part_2 == 136904920099226
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == "3,6,3,7,0,7,0,3,0"
+    assert part_2 == 136904920099226

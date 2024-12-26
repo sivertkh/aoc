@@ -1,4 +1,4 @@
-# AOC 2023
+# AOC 2024
 # --- Day 2: Red-Nosed Reports ---
 
 import numpy as np
@@ -15,7 +15,7 @@ def is_safe(r: list[int]) -> bool:
     return np.all((d <= 3) & (d > 0)) and is_sorted(r)
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         data = [list(map(int, x.split())) for x in fp.read().split("\n") if x]
     p1 = p2 = 0
@@ -30,8 +30,9 @@ def solve():
     return p1, p1 + p2
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 598
-assert part_2 == 634
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 598
+    assert part_2 == 634

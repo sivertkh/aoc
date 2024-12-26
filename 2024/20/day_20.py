@@ -4,7 +4,7 @@
 import numpy as np
 
 
-def generate_points_in_manhattan_square(x, y, r):
+def generate_points_in_manhattan_square(x: int, y: int, r: int) -> list:
     """Generates all positive points with a manhattan distance of at least r for a point (x,y).
 
     Modified version of https://stackoverflow.com/a/75129338
@@ -25,37 +25,35 @@ def generate_points_in_manhattan_square(x, y, r):
     return [p for p in points if p[0] >= 0 and p[1] >= 0]
 
 
-def solve_part_1(new_dots):
+def solve_part_1(dots: dict):
     res = 0
-    for k, v in new_dots.items():
+    for k, v in dots.items():
         x, y = k
-        for m in [
-            m for m in generate_points_in_manhattan_square(x, y, 2) if m in new_dots
-        ]:
-            if v < new_dots[m]:
-                speed = new_dots[m] - 2 - v
+        for m in [m for m in generate_points_in_manhattan_square(x, y, 2) if m in dots]:
+            if v < dots[m]:
+                speed = dots[m] - 2 - v
                 if speed >= 100:
                     res += 1
 
     return res
 
 
-def solve_part_2(new_dots):
+def solve_part_2(dots: dict):
     res = 0
-    for k, v in new_dots.items():
+    for k, v in dots.items():
         x, y = k
         for m in [
-            m for m in generate_points_in_manhattan_square(x, y, 20) if m in new_dots
+            m for m in generate_points_in_manhattan_square(x, y, 20) if m in dots
         ]:
-            if v < new_dots[m]:
+            if v < dots[m]:
                 cheat_len = abs(x - m[0]) + abs(y - m[1])
-                speed = new_dots[m] - cheat_len - v
+                speed = dots[m] - cheat_len - v
                 if speed >= 100:
                     res += 1
     return res
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         data = np.array([list(x.strip()) for x in fp.read().split("\n") if x])
 
@@ -93,8 +91,9 @@ def solve():
     return solve_part_1(new_dots), solve_part_2(new_dots)
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 1415
-assert part_2 == 1022577
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 1415
+    assert part_2 == 1022577

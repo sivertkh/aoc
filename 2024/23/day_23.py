@@ -5,7 +5,7 @@ import itertools as it
 import networkx as nx
 
 
-def solve():
+def solve() -> tuple[int, str]:
     with open("input.txt", encoding="utf-8") as fp:
         data = [tuple(x.split("-")) for x in fp.read().split("\n") if x]
 
@@ -30,7 +30,7 @@ def solve():
     return len(cliques_3), ",".join(max_clique)
 
 
-if __name__ == "__main":
+if __name__ == "__main__":
     part_1, part_2 = solve()
     print(f"Part 1: {part_1}")
     print(f"Part 2: {part_2}")

@@ -2,7 +2,7 @@
 # --- Day 7: Bridge Repair ---
 
 
-def sum_part_1(target, cur_sum, numbers):
+def sum_part_1(target: int, cur_sum: int, numbers: list[int]) -> bool:
     if not numbers:
         return target == cur_sum
 
@@ -14,7 +14,7 @@ def sum_part_1(target, cur_sum, numbers):
     )
 
 
-def sum_part_2(target, cur_sum, numbers):
+def sum_part_2(target: int, cur_sum: int, numbers: list[int]) -> bool:
     if not numbers:
         return target == cur_sum
 
@@ -28,7 +28,7 @@ def sum_part_2(target, cur_sum, numbers):
     )
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         data = [x.split(":") for x in fp.read().split("\n") if x]
         data = [[int(x), list(map(int, y.strip().split()))] for x, y in data]
@@ -50,8 +50,9 @@ def solve():
     return p1, p2
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 12940396350192
-assert part_2 == 106016735664498
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 12940396350192
+    assert part_2 == 106016735664498

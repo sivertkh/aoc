@@ -5,7 +5,7 @@ import functools
 
 
 @functools.cache
-def possible_combination_count(avail, target: str):
+def possible_combination_count(avail: tuple, target: str) -> int:
     if not target:
         return 1
 
@@ -20,7 +20,7 @@ def possible_combination_count(avail, target: str):
     return count
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         avail, patterns = [x for x in fp.read().split("\n\n") if x]
 
@@ -37,8 +37,9 @@ def solve():
     return p1, p2
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 311
-assert part_2 == 616234236468263
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 311
+    assert part_2 == 616234236468263

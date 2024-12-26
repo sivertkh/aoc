@@ -5,7 +5,7 @@ import collections as coll
 import graphviz
 
 
-def run_program(wire_state, gates):
+def run_program(wire_state: dict, gates: list) -> dict:
 
     queue = coll.deque(gates)
     while queue:
@@ -28,13 +28,13 @@ def run_program(wire_state, gates):
     return wire_state
 
 
-def print_result(wire_state):
+def print_result(wire_state: dict) -> int:
     tmp = {k: v for k, v in wire_state.items() if k[0] == "z"}
     tmp = dict(sorted(tmp.items(), reverse=True))
     return int("".join(map(str, tmp.values())), 2)
 
 
-def print_gates(gates):
+def print_gates(gates: list) -> None:
 
     dot = graphviz.Digraph(comment="Wires")
     for gate in gates:
@@ -52,12 +52,12 @@ def print_gates(gates):
     dot.render("fix-4.gv", view=True)
 
 
-def solve_part_1(wire_state, gates):
+def solve_part_1(wire_state: dict, gates: list) -> int:
     wire_state = run_program(wire_state, gates)
     return print_result(wire_state)
 
 
-def solve_part_2():
+def solve_part_2() -> str:
     """
     Solve part 2 by printing out the full wiring of the gates.
 
@@ -83,7 +83,7 @@ def solve_part_2():
     return ",".join(sorted(["fbq", "pbv", "qff", "qnw", "qqp", "z16", "z23", "z36"]))
 
 
-def solve():
+def solve() -> tuple[int, str]:
     with open("input.txt", encoding="utf-8") as fp:
         start, gates = fp.read().split("\n\n")
 
@@ -105,8 +105,9 @@ def solve():
     return solve_part_1(wire_state.copy(), gates), solve_part_2()
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 49430469426918
-assert part_2 == "fbq,pbv,qff,qnw,qqp,z16,z23,z36"
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 49430469426918
+    assert part_2 == "fbq,pbv,qff,qnw,qqp,z16,z23,z36"

@@ -5,11 +5,11 @@ import collections as coll
 import numpy as np
 
 
-def gps_sum(m, t):
+def gps_sum(m: np.array, t: chr) -> int:
     return sum([x * 100 + y for x, y in zip(*np.where(m == t))])
 
 
-def solve_part_1(m, moves):
+def solve_part_1(m: np.array, moves: list) -> int:
     robot_x, robot_y = next(zip(*np.where(m == "@")))
 
     # No need to store the robot on the map
@@ -77,7 +77,7 @@ def solve_part_1(m, moves):
     return gps_sum(m, "O")
 
 
-def double_map(m):
+def double_map(m: np.array):
     new_map = []
     for l in m:
         tmp = []
@@ -92,7 +92,7 @@ def double_map(m):
     return np.array(new_map)
 
 
-def move_ud(m, direction, robot_x, robot_y) -> tuple[int, int]:
+def move_ud(m: np.array, direction, robot_x, robot_y) -> tuple[int, int]:
     d = 1 if direction == "v" else -1
 
     m_to = m[robot_x + d][robot_y]
@@ -146,7 +146,7 @@ def move_ud(m, direction, robot_x, robot_y) -> tuple[int, int]:
     return robot_x + d, robot_y
 
 
-def solve_part_2(m, moves):
+def solve_part_2(m: np.array, moves: list) -> int:
 
     m = double_map(m)
     robot_x, robot_y = next(zip(*np.where(m == "@")))
@@ -208,7 +208,7 @@ def solve_part_2(m, moves):
     return gps_sum(m, "[")
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         data = [x for x in fp.read().split("\n\n") if x]
         m = np.array([list(x) for x in data[0].split() if x])
@@ -217,8 +217,9 @@ def solve():
     return solve_part_1(m.copy(), moves), solve_part_2(m, moves)
 
 
-part_1, part_2 = solve()
-print(f"Part 1: {part_1}")
-print(f"Part 2: {part_2}")
-assert part_1 == 1463715
-assert part_2 == 1481392
+if __name__ == "__main__":
+    part_1, part_2 = solve()
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
+    assert part_1 == 1463715
+    assert part_2 == 1481392

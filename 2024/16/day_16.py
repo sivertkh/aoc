@@ -7,7 +7,7 @@ import networkx as nx
 import numpy as np
 
 
-def create_graph(data):
+def create_graph(data: np.array) -> nx.Graph:
     """Generate graph of the maze.
 
     Turns are handled by dividing N/S and E/W into there own "layer".
@@ -80,7 +80,7 @@ def create_graph(data):
     return G
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         data = np.array([list(x) for x in fp.read().split("\n") if x])
 

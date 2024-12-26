@@ -4,13 +4,13 @@
 import numpy as np
 
 
-def next_number(secret_number):
+def next_number(secret_number: int) -> int:
     secret_number = (secret_number * 64 ^ secret_number) % 16777216
     secret_number = (secret_number // 32 ^ secret_number) % 16777216
     return (secret_number * 2048 ^ secret_number) % 16777216
 
 
-def solve():
+def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         numbers = [int(x) for x in fp.read().split("\n") if x]
 
