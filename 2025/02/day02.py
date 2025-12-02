@@ -3,47 +3,25 @@ AOC 2025
 --- Day 2: Gift Shop ---
 """
 
-import textwrap
-
-
-def is_invalid_id(p_id: int) -> bool:
-    n = str(p_id)
-
-    if len(n) % 2 != 0:
-        return False
-
-    return n[: len(n) // 2] == n[len(n) // 2 :]
-
 
 def solve_part_1(id_ranges: list[list[int]]) -> int:
     invalid_count = 0
 
     for r in id_ranges:
         for p_id in range(r[0], r[1] + 1):
-            if is_invalid_id(p_id):
+            s = str(p_id)
+            if s[: len(s) // 2] == s[len(s) // 2 :]:
                 invalid_count += p_id
 
     return invalid_count
-
-
-def is_invalid_id_part_2(p_id: int) -> bool:
-    n = str(p_id)
-    l = len(n)
-    for i in range(1, l // 2 + 1):
-        if l % i != 0:
-            continue
-
-        if len(set(textwrap.wrap(n, i))) == 1:
-            return True
-
-    return False
 
 
 def solve_part_2(id_ranges: list[list[int]]) -> int:
     invalid = 0
     for r in id_ranges:
         for p_id in range(r[0], r[1] + 1):
-            if is_invalid_id_part_2(p_id):
+            s = str(p_id)
+            if s in (s + s)[1:-1]:
                 invalid += p_id
     return invalid
 
