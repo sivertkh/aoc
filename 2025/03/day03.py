@@ -8,17 +8,8 @@ def solve_part_1(banks: list[list[int]]) -> int:
     total_joltage = 0
 
     for bank in banks:
-        for x in range(9, 1, -1):
-            try:
-                i = bank.index(x)
-            except ValueError:
-                continue
-
-            if i == len(bank) - 1:
-                continue
-
-            total_joltage += int(f"{x}{max(bank[i + 1 :])}")
-            break
+        i = bank.index(max(bank[:-1]))
+        total_joltage += int(f"{bank[i]}{max(bank[i + 1 :])}")
 
     return total_joltage
 
