@@ -30,13 +30,15 @@ def solve() -> tuple[int, int]:
     with open("input.txt", encoding="utf-8") as fp:
         ranges, ingridients = fp.read().split("\n\n", maxsplit=1)
 
-    ranges = np.array([list(map(int, x.split("-"))) for x in ranges.split("\n") if x])
+    ranges = merge_ranges(
+        np.array([list(map(int, x.split("-"))) for x in ranges.split("\n") if x])
+    )
     ingridients = [int(x.strip()) for x in ingridients.split("\n") if x]
 
     part_1_res = sum(
         1 for i in ingridients if np.any((i >= ranges[:, 0]) & (i <= ranges[:, 1]))
     )
-    part_2_res = sum(stop - start + 1 for start, stop in merge_ranges(ranges))
+    part_2_res = sum(stop - start + 1 for start, stop in ranges)
 
     return part_1_res, part_2_res
 
