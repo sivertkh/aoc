@@ -1,6 +1,6 @@
 """
 AOC 2025
---- Day 7: Laboratories ---
+--- Day 8: Playground ---
 """
 
 import math
@@ -15,21 +15,23 @@ def solve() -> tuple[int, int]:
             tuple(map(int, x.strip().split(","))) for x in fp.read().split("\n") if x
         )
 
-    distances = []
-
-    for a, b in itertools.combinations(data, 2):
-        dist = math.sqrt(
-            abs(a[0] - b[0]) ** 2 + abs(a[1] - b[1]) ** 2 + abs(a[2] - b[2]) ** 2
+    distances = [
+        (
+            math.sqrt(
+                abs(a[0] - b[0]) ** 2 + abs(a[1] - b[1]) ** 2 + abs(a[2] - b[2]) ** 2
+            ),
+            a,
+            b,
         )
-        distances.append([dist, a, b])
-
+        for a, b in itertools.combinations(data, 2)
+    ]
     distances.sort(key=lambda x: x[0])
-    G = nx.Graph()
 
+    G = nx.Graph()
     part_1_res = 0
     part_2_res = 0
 
-    for dist, a, b in distances:
+    for _, a, b in distances:
         G.add_edge(a, b)
         if len(G.edges) == 1000:
             lengths = [
