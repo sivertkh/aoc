@@ -30,17 +30,21 @@ def solve() -> tuple[int, int]:
     G = nx.Graph()
     part_1_res = 0
     part_2_res = 0
+    nr_of_nodes = len(data)
 
     for _, a, b in distances:
         G.add_edge(a, b)
-        if len(G.edges) == 1000:
-            lengths = [
-                len(c)
-                for c in sorted(nx.connected_components(G), key=len, reverse=True)
-            ]
-            part_1_res = lengths[0] * lengths[1] * lengths[2]
+        if len(G.edges) == nr_of_nodes:
+            part_1_res = math.prod(
+                [
+                    len(c)
+                    for c in sorted(nx.connected_components(G), key=len, reverse=True)[
+                        :3
+                    ]
+                ]
+            )
 
-        if len(G.nodes) == 1000:
+        if len(G.nodes) == nr_of_nodes:
             part_2_res = a[0] * b[0]
             break
 
